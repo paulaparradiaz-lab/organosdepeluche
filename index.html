@@ -2279,37 +2279,49 @@ async function pagarWompi(){
   const c=document.getElementById('coC').value.trim();
   if(!n||!e||!c){alert('Completa nombre, correo y celular para continuar.');return;}
 
-  const WOMPI_PUBLIC_KEY    = 'pub_prod_1ZVj4P8nW6zQ7J428diXksfvgDfFyx3B';
-  const INTEGRITY_SECRET    = 'REEMPLAZAR_CON_FUNCION_SERVIDOR'; // ⚠️ nunca poner aquí
-  const totalCentavos       = sum(false) * 100;
-  const currency            = 'COP';
-  const referencia          = 'SP-' + Date.now();
-  const redirectUrl         = window.location.origin + window.location.pathname;
+  const WOMPI_PUBLIC_KEY = 'pub_prod_1ZVj4P8nW6zQ7J428diXksfvgDfFyx3B';
+  const WORKER_URL       = 'https://wompi-firma.paulaplf555.workers.dev/';
+  const totalCentavos    = sum(false) * 100;
+  const currency         = 'COP';
+  const referencia       = 'SP-' + Date.now();
+  const redirectUrl      = window.location.origin + window.location.pathname;
 
-  // Generar firma de integridad SHA256
-  // Formato: referencia + monto + moneda + secreto
-  const cadena = referencia + totalCentavos + currency + INTEGRITY_SECRET;
-  const encoder = new TextEncoder();
-  const data = encoder.encode(cadena);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const firma = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+  // Mostrar loading
+  const btn = document.getElementById('coBtnPay');
+  const txtOriginal = btn.innerHTML;
+  btn.innerHTML = '⏳ Procesando...';
+  btn.disabled = true;
 
-  // Construir URL del checkout hosted de Wompi
-  const params = new URLSearchParams({
-    'public-key': WOMPI_PUBLIC_KEY,
-    'currency': currency,
-    'amount-in-cents': totalCentavos,
-    'reference': referencia,
-    'signature:integrity': firma,
-    'redirect-url': redirectUrl,
-    'customer-data:email': e,
-    'customer-data:full-name': n,
-    'customer-data:phone-number': c,
-    'customer-data:phone-number-prefix': '+57',
-  });
+  try {
+    // Pedir firma al Worker de Cloudflare (seguro)
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ referencia, monto: totalCentavos, moneda: currency })
+    });
+    const { firma } = await res.json();
 
-  window.location.href = 'https://checkout.wompi.co/p/?' + params.toString();
+    // Construir URL del checkout hosted de Wompi
+    const params = new URLSearchParams({
+      'public-key': WOMPI_PUBLIC_KEY,
+      'currency': currency,
+      'amount-in-cents': totalCentavos,
+      'reference': referencia,
+      'signature:integrity': firma,
+      'redirect-url': redirectUrl,
+      'customer-data:email': e,
+      'customer-data:full-name': n,
+      'customer-data:phone-number': c,
+      'customer-data:phone-number-prefix': '+57',
+    });
+
+    window.location.href = 'https://checkout.wompi.co/p/?' + params.toString();
+
+  } catch(err) {
+    btn.innerHTML = txtOriginal;
+    btn.disabled = false;
+    alert('Error al procesar el pago. Intenta de nuevo.');
+  }
 }
 function waContra(){
   const n=document.getElementById('coN').value||'Cliente';
