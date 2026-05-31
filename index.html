@@ -2348,6 +2348,12 @@ function showToast(msg){
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();closeCo();}});
 
+// Resetear botón de pago si venimos de Wompi
+window.addEventListener('pageshow', function(){
+  const btn = document.getElementById('coBtnPay');
+  if(btn){ btn.innerHTML='⚡ Pagar ahora'; btn.disabled=false; }
+});
+
 // Reveal on scroll
 const revealEls = document.querySelectorAll('.reveal');
 const revealObs = new IntersectionObserver(entries => {
