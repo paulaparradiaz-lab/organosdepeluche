@@ -1016,13 +1016,13 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
 @media(max-width:640px){
 
   /* ── TOP BAR ── */
-  .top-bar{font-size:11px;padding:8px 16px;gap:6px;text-align:center;flex-wrap:wrap;justify-content:center;}
+  .top-bar{font-size:11px;padding:8px 16px;gap:6px;text-align:center;flex-wrap:wrap;justify-content:center;position:relative;}
   .top-bar-pill{font-size:9px;padding:2px 8px;}
 
   /* ── HEADER ── */
   header{
     padding:0 16px;gap:10px;
-    top:0; /* top bar scrolls away on mobile */
+    top:0 !important;
     height:60px;
   }
   .logo-name small{display:none;}
@@ -1175,7 +1175,7 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   section[style*="background:var(--navy)"]{padding:48px 20px !important;}
 
   /* ── MODAL ── */
-  .overlay{padding:0;align-items:flex-end;}
+  .overlay{padding:0;align-items:flex-end;overflow-y:auto;-webkit-overflow-scrolling:touch;}
   .modal{
     grid-template-columns:1fr;
     border-radius:20px 20px 0 0;
@@ -1208,6 +1208,9 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   .cp-btn-pay{font-size:13px;padding:14px;}
   .cp-btn-contra,.cp-btn-add{font-size:12px;padding:12px;}
   .cp-secure{font-size:9px;}
+
+  /* ── INPUTS — evitar zoom automático en iOS ── */
+  .fg input,.fg select{font-size:16px !important;}
 
   /* ── CART FAB ── */
   .cart-fab{
