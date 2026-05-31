@@ -2271,7 +2271,12 @@ function openCo(contra){
   document.getElementById('coOv').classList.add('on');
   closePanel();
 }
-function closeCo(){document.getElementById('coOv').classList.remove('on');}
+function closeCo(){
+  document.getElementById('coOv').classList.remove('on');
+  // Restaurar botón de pago
+  const btn = document.getElementById('coBtnPay');
+  if(btn){ btn.innerHTML='⚡ Pagar ahora'; btn.disabled=false; }
+}
 function closeCoIfBg(e){if(e.target===document.getElementById('coOv'))closeCo();}
 async function pagarWompi(){
   const n=document.getElementById('coN').value.trim();
