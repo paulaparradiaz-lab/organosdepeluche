@@ -2211,12 +2211,43 @@ function openCo(contra){
 }
 function closeCo(){document.getElementById('coOv').classList.remove('on');}
 function closeCoIfBg(e){if(e.target===document.getElementById('coOv'))closeCo();}
-function pagarWompi(){
-  const n=document.getElementById('coN').value;
-  const e=document.getElementById('coE').value;
-  const c=document.getElementById('coC').value;
-  if(!n||!e||!c){alert('Completa nombre, correo y celular.');return;}
-  alert('✅ Integración Wompi\n\nEn producción:\n1. n8n genera referencia + firma SHA256\n2. Se abre widget Wompi\n\nTotal: '+fmt(sum()));
+async function pagarWompi(){
+  const n=document.getElementById('coN').value.trim();
+  const e=document.getElementById('coE').value.trim();
+  const c=document.getElementById('coC').value.trim();
+  if(!n||!e||!c){alert('Completa nombre, correo y celular para continuar.');return;}
+
+  const WOMPI_PUBLIC_KEY    = 'pub_prod_1ZVj4P8nW6zQ7J428diXksfvgDfFyx3B';
+  const INTEGRITY_SECRET    = 'REEMPLAZAR_CON_FUNCION_SERVIDOR'; // ⚠️ nunca poner aquí
+  const totalCentavos       = sum(false) * 100;
+  const currency            = 'COP';
+  const referencia          = 'SP-' + Date.now();
+  const redirectUrl         = window.location.origin + window.location.pathname;
+
+  // Generar firma de integridad SHA256
+  // Formato: referencia + monto + moneda + secreto
+  const cadena = referencia + totalCentavos + currency + INTEGRITY_SECRET;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(cadena);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const firma = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+
+  // Construir URL del checkout hosted de Wompi
+  const params = new URLSearchParams({
+    'public-key': WOMPI_PUBLIC_KEY,
+    'currency': currency,
+    'amount-in-cents': totalCentavos,
+    'reference': referencia,
+    'signature:integrity': firma,
+    'redirect-url': redirectUrl,
+    'customer-data:email': e,
+    'customer-data:full-name': n,
+    'customer-data:phone-number': c,
+    'customer-data:phone-number-prefix': '+57',
+  });
+
+  window.location.href = 'https://checkout.wompi.co/p/?' + params.toString();
 }
 function waContra(){
   const n=document.getElementById('coN').value||'Cliente';
@@ -2501,6 +2532,43 @@ function mkCard(t) {
     }, 2000);
 
   }).catch(()=>{});
+})();
+</script>
+
+<script>
+// ── Hero móvil: mover imagen entre título y descripción ──
+(function(){
+  function reorganizeHero(){
+    const isMob = window.innerWidth <= 640;
+    const heroLeft  = document.querySelector('.hero-left');
+    const heroRight = document.querySelector('.hero-right');
+    const h1        = document.querySelector('.hero-left h1');
+    const desc      = document.querySelector('.hero-desc');
+
+    if(!heroLeft || !heroRight || !h1 || !desc) return;
+
+    if(isMob){
+      // Move hero-right (image) inside hero-left, between h1 and desc
+      if(!document.querySelector('.hero-left .hero-right')){
+        heroRight.style.cssText = 'min-height:260px;max-height:300px;border-radius:16px;overflow:hidden;margin:16px 0;order:unset;';
+        h1.insertAdjacentElement('afterend', heroRight);
+      }
+    } else {
+      // Restore hero-right to its original position outside hero-left
+      const heroSection = document.querySelector('.hero');
+      if(heroSection && !heroSection.querySelector(':scope > .hero-right')){
+        heroRight.style.cssText = '';
+        heroSection.appendChild(heroRight);
+      }
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', reorganizeHero);
+  } else {
+    reorganizeHero();
+  }
+  window.addEventListener('resize', reorganizeHero);
 })();
 </script>
 
