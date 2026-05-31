@@ -2283,10 +2283,14 @@ async function pagarWompi(){
   const n=document.getElementById('coN').value.trim();
   const e=document.getElementById('coE').value.trim();
   const c=document.getElementById('coC').value.trim();
+  const d=document.getElementById('coD').value.trim();
+  const ciudad=document.getElementById('coCd').value.trim();
+  const depto=document.getElementById('coDp').value.trim();
   if(!n||!e||!c){alert('Completa nombre, correo y celular para continuar.');return;}
 
   const WOMPI_PUBLIC_KEY = 'pub_prod_1ZVj4P8nW6zQ7J428diXksfvgDfFyx3B';
   const WORKER_URL       = 'https://wompi-firma.paulaplf555.workers.dev/';
+  const N8N_URL          = 'https://proyectosconpaulagpc.app.n8n.cloud/webhook/wompifirmaparaorganosdepeluche109fj$!#$G!';
   const totalCentavos    = sum(false) * 100;
   const currency         = 'COP';
   const referencia       = 'SP-' + Date.now();
@@ -2299,7 +2303,26 @@ async function pagarWompi(){
   btn.disabled = true;
 
   try {
-    // Pedir firma al Worker de Cloudflare (seguro)
+    // 1. Enviar pedido completo a n8n
+    const productos = cart.map(it => `${it.n} x${it.qty} = ${fmt(it.p * it.qty)}`).join(', ');
+    fetch(N8N_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        referencia,
+        nombre: n,
+        correo: e,
+        celular: c,
+        direccion: d,
+        ciudad,
+        departamento: depto,
+        productos,
+        total: fmt(sum(false)),
+        fecha: new Date().toLocaleString('es-CO')
+      })
+    }).catch(()=>{}); // No bloqueamos si n8n falla
+
+    // 2. Pedir firma al Worker de Cloudflare
     const res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -2307,7 +2330,7 @@ async function pagarWompi(){
     });
     const { firma } = await res.json();
 
-    // Construir URL del checkout hosted de Wompi
+    // 3. Abrir Wompi
     const params = new URLSearchParams({
       'public-key': WOMPI_PUBLIC_KEY,
       'currency': currency,
