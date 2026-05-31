@@ -168,53 +168,50 @@ h1 .c-navy{color:var(--navy);}
   min-height:0;
 }
 
+/* ── SLIDESHOW HERO ── */
 .hgallery{
-  display:flex;flex-direction:column;
-  gap:8px;width:100%;min-height:0;
-}
-
-/* foto grande */
-.hgal-main{
-  flex:1;border-radius:var(--r);overflow:hidden;
-  position:relative;min-height:0;
+  width:100%;min-height:0;
+  position:relative;
+  border-radius:var(--r);overflow:hidden;
   box-shadow:0 4px 20px rgba(1,33,101,0.12);
 }
-.hgal-main img{
-  width:100%;height:100%;
-  object-fit:cover;object-position:center 20%;
-  display:block;
-  transition:opacity .3s ease;
+.hgal-main{
+  position:relative;width:100%;height:100%;
 }
-.hgal-main img.hgal-fade{opacity:0;}
+.hgal-slide{
+  position:absolute;inset:0;
+  opacity:0;transition:opacity 1s ease;
+  pointer-events:none;
+}
+.hgal-slide.active{
+  opacity:1;pointer-events:auto;
+}
+.hgal-slide img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  display:block;
+}
 .hgal-overlay{
   position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(to top,rgba(1,33,101,0.25) 0%,transparent 50%);
+  background:linear-gradient(to top,rgba(1,33,101,0.18) 0%,transparent 50%);
+  z-index:1;
 }
-
-/* miniaturas */
-.hgal-thumbs{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:5px;flex-shrink:0;height:80px;
+/* puntitos */
+.hgal-dots{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  display:flex;gap:7px;z-index:2;
 }
-.hgal-thumb{
-  border-radius:var(--r-sm);overflow:hidden;
-  border:2.5px solid transparent;
-  cursor:pointer;padding:0;background:none;
-  transition:border-color .2s,transform .2s,box-shadow .2s;
+.hgal-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,0.5);
+  border:none;cursor:pointer;padding:0;
+  transition:background .3s,transform .3s;
 }
-.hgal-thumb img{
-  width:100%;height:100%;
-  object-fit:cover;object-position:center 20%;
-  display:block;
+.hgal-dot.active{
+  background:#fff;transform:scale(1.3);
 }
-.hgal-thumb:hover{
-  transform:translateY(-2px);
-  box-shadow:0 4px 12px rgba(1,33,101,0.18);
-}
-.hgal-thumb-on{
-  border-color:var(--navy) !important;
-  box-shadow:0 0 0 1px var(--navy);
-}
+/* ocultar thumbs viejos */
+.hgal-thumbs{ display:none; }
 
 /* ── ASÍ FUNCIONA (proceso de venta) ── */
 .proceso-section{
@@ -1016,25 +1013,18 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
 
   <div class="hero-right">
     <div class="hgallery">
-      <!-- Main image -->
       <div class="hgal-main">
-        <img id="hgalImg" src="fotos/imagen-01.jpg" alt="Órganos de Peluche">
+        <div class="hgal-slide active"><img src="fotos/imagen-02.jpg" alt="Órganos de Peluche"></div>
+        <div class="hgal-slide"><img src="fotos/imagen-04.jpg" alt="Órganos de Peluche"></div>
+        <div class="hgal-slide"><img src="fotos/imagen-06.jpg" alt="Órganos de Peluche"></div>
+        <div class="hgal-slide"><img src="fotos/imagen-08.jpg" alt="Órganos de Peluche"></div>
         <div class="hgal-overlay"></div>
       </div>
-      <!-- Thumbnails -->
-      <div class="hgal-thumbs">
-        <button class="hgal-thumb hgal-thumb-on" data-src="fotos/imagen-02.jpg">
-          <img src="fotos/imagen-03.jpg" alt="">
-        </button>
-        <button class="hgal-thumb" data-src="fotos/imagen-04.jpg">
-          <img src="fotos/imagen-05.jpg" alt="">
-        </button>
-        <button class="hgal-thumb" data-src="fotos/imagen-06.jpg">
-          <img src="fotos/imagen-07.jpg" alt="">
-        </button>
-        <button class="hgal-thumb" data-src="fotos/imagen-08.jpg">
-          <img src="fotos/imagen-09.jpg" alt="">
-        </button>
+      <div class="hgal-dots">
+        <button class="hgal-dot active"></button>
+        <button class="hgal-dot"></button>
+        <button class="hgal-dot"></button>
+        <button class="hgal-dot"></button>
       </div>
     </div>
   </div>
@@ -1599,28 +1589,29 @@ revealEls.forEach(el => revealObs.observe(el));
   }
 })();
 
-// ── HERO GALLERY ──
+// ── HERO SLIDESHOW ──
 (function(){
-  const mainImg = document.getElementById('hgalImg');
-  const thumbs  = document.querySelectorAll('.hgal-thumb');
-  if(!mainImg || !thumbs.length) return;
+  const slides = document.querySelectorAll('.hgal-slide');
+  const dots   = document.querySelectorAll('.hgal-dot');
+  if(!slides.length) return;
+  let cur = 0, timer;
 
-  const POS = ['center center','center 15%','center 10%','center center'];
-
-  function activate(btn){
-    const i = Array.from(thumbs).indexOf(btn);
-    mainImg.classList.add('hgal-fade');
-    setTimeout(()=>{
-      mainImg.src = btn.dataset.src;
-      mainImg.style.objectPosition = POS[i] || 'center center';
-      mainImg.onload = ()=> mainImg.classList.remove('hgal-fade');
-      if(mainImg.complete) mainImg.classList.remove('hgal-fade');
-    }, 220);
-    thumbs.forEach(t => t.classList.remove('hgal-thumb-on'));
-    btn.classList.add('hgal-thumb-on');
+  function goTo(n){
+    slides[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('active');
   }
 
-  thumbs.forEach(t => t.addEventListener('click', ()=> activate(t)));
+  function next(){ goTo(cur + 1); }
+
+  function startTimer(){ timer = setInterval(next, 3500); }
+  function resetTimer(){ clearInterval(timer); startTimer(); }
+
+  dots.forEach((d, i) => d.addEventListener('click', ()=>{ goTo(i); resetTimer(); }));
+
+  startTimer();
 })();
 
 // ── PROCESO STEPS — auto-highlight ──
