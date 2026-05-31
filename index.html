@@ -1176,23 +1176,40 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
 
   /* ── MODAL ── */
   .overlay{padding:0;align-items:flex-end;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .overlay{padding:0;align-items:flex-end;}
   .modal{
     grid-template-columns:1fr;
     border-radius:20px 20px 0 0;
-    max-height:92vh;
+    max-height:88vh;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
     animation:slideUp .3s cubic-bezier(.32,0,.22,1);
+    position:relative;
   }
   @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   .modal-vis{
     border-right:none;
     border-bottom:1px solid var(--border);
-    min-height:320px;
-    max-height:380px;
+    min-height:280px;
+    max-height:300px;
   }
-  .modal-vis img{object-fit:contain !important;padding:4px;background:#f8f9ff;transform:scale(1.08);}
-  .modal-body{padding:20px 20px 28px;}
+  .modal-vis img{object-fit:contain !important;padding:4px;background:#f8f9ff;}
+  .modal-body{
+    padding:20px 20px 16px;
+  }
   .modal-name{font-size:20px;}
   .m-price{font-size:24px;}
+  /* Botones fijos abajo en móvil */
+  .modal-actions{
+    position:sticky;
+    bottom:0;
+    background:#fff;
+    padding:12px 20px 20px;
+    margin:0 -20px -16px;
+    border-top:1px solid var(--border);
+    gap:8px;
+    z-index:10;
+  }
 
   /* ── CART DRAWER ── */
   .cpanel{width:100%;border-left:none;border-radius:24px 24px 0 0;top:auto;bottom:0;height:92vh;transform:translateY(100%);}
