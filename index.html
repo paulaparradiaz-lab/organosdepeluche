@@ -1757,13 +1757,10 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
       <div class="fg full"><label>Correo electrónico</label><input id="coE" type="email" placeholder="correo@ejemplo.com"></div>
       <div class="fg full"><label>Dirección de entrega</label><input id="coD" type="text" placeholder="Calle 123 # 4-5, Apto 201"></div>
       <div class="fg"><label>Ciudad</label><input id="coCd" type="text" placeholder="Barranquilla"></div>
-      <div class="fg"><label>Departamento</label>
-        <select id="coDp">
-          <option value="">Selecciona</option>
-          <option>Atlántico</option><option>Bogotá D.C.</option>
-          <option>Antioquia</option><option>Valle del Cauca</option>
-          <option>Cundinamarca</option><option>Otro</option>
-        </select>
+      <div class="fg" style="position:relative;">
+        <label>Departamento</label>
+        <input type="text" id="coDp" placeholder="Departamento" autocomplete="off" oninput="filtrarDep(this.value)" onfocus="filtrarDep(this.value)" onblur="setTimeout(()=>hideDep(),200)">
+        <div id="depSugg" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--border);border-radius:10px;box-shadow:var(--sh);z-index:999;max-height:180px;overflow-y:auto;"></div>
       </div>
     </div>
     <div id="co-promo-hint" style="display:none;font-size:11px;font-weight:700;color:var(--navy);background:rgba(46,204,64,0.08);border:1px dashed rgba(46,204,64,0.4);border-radius:10px;padding:8px 12px;margin-bottom:8px;text-align:center;"></div>
@@ -2347,6 +2344,25 @@ function showToast(msg){
   tt=setTimeout(()=>t.classList.remove('on'),2600);
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();closeCo();}});
+
+// Autocompletado departamentos Colombia
+const DEPARTAMENTOS = ['Amazonas','Antioquia','Arauca','Atlántico','Bogotá D.C.','Bolívar','Boyacá','Caldas','Caquetá','Casanare','Cauca','Cesar','Chocó','Córdoba','Cundinamarca','Guainía','Guaviare','Huila','La Guajira','Magdalena','Meta','Nariño','Norte de Santander','Putumayo','Quindío','Risaralda','San Andrés y Providencia','Santander','Sucre','Tolima','Valle del Cauca','Vaupés','Vichada'];
+
+function filtrarDep(val){
+  const sugg = document.getElementById('depSugg');
+  if(!val){ sugg.style.display='none'; return; }
+  const filtered = DEPARTAMENTOS.filter(d => d.toLowerCase().includes(val.toLowerCase()));
+  if(!filtered.length){ sugg.style.display='none'; return; }
+  sugg.innerHTML = filtered.map(d => `<div onclick="selectDep('${d}')" style="padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px solid var(--border);color:var(--text);" onmouseover="this.style.background='var(--off)'" onmouseout="this.style.background=''">${d}</div>`).join('');
+  sugg.style.display='block';
+}
+function selectDep(d){
+  document.getElementById('coDp').value = d;
+  document.getElementById('depSugg').style.display='none';
+}
+function hideDep(){
+  document.getElementById('depSugg').style.display='none';
+}
 
 // Resetear botón de pago si venimos de Wompi
 window.addEventListener('pageshow', function(){
