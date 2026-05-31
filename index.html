@@ -1044,8 +1044,8 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   }
   .hero-right{
     order:2;
-    min-height:320px;
-    max-height:420px;
+    min-height:420px;
+    max-height:520px;
   }
   .hgal-main img{object-position:center top;object-fit:cover;}
 
@@ -1134,7 +1134,25 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   .ps-desc{font-size:12px;line-height:1.55;}
 
   /* ── TESTIMONIOS ── */
-  .testi-section{padding:40px 16px;}
+  .testi-section{
+    padding:40px 16px;
+    background:linear-gradient(135deg, #012165 0%, #0d2d7a 55%, #1a3f9e 100%) !important;
+  }
+  .testi-section .testi-header h2{color:#fff;}
+  .testi-section .testi-header p{color:rgba(255,255,255,0.6);}
+  .testi-section .tcard{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.10);
+    border-top-color:inherit;
+  }
+  .testi-section .tcard-quote{color:rgba(255,255,255,0.85);}
+  .testi-section .tcard-author-name{color:#fff;}
+  .testi-section .tcard-author-role{color:rgba(255,255,255,0.5);}
+  .testi-section .tcard-avatar{
+    font-size:14px !important;
+    font-weight:800 !important;
+    letter-spacing:-0.5px;
+  }
   .testi-header h2{font-size:clamp(22px,6vw,30px);}
   .testi-header p{font-size:13px;}
   .testi-columns{
@@ -1168,10 +1186,10 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   .modal-vis{
     border-right:none;
     border-bottom:1px solid var(--border);
-    min-height:280px;
-    max-height:320px;
+    min-height:320px;
+    max-height:380px;
   }
-  .modal-vis img{object-fit:contain !important;padding:12px;background:#f8f9ff;}
+  .modal-vis img{object-fit:contain !important;padding:4px;background:#f8f9ff;transform:scale(1.08);}
   .modal-body{padding:20px 20px 28px;}
   .modal-name{font-size:20px;}
   .m-price{font-size:24px;}
@@ -2328,44 +2346,44 @@ revealEls.forEach(el => revealObs.observe(el));
 // ── TESTIMONIOS SCROLL INFINITO ──
 const TESTIMONIOS = [
   // Columna 1
-  { col:1, accent:'accent-navy', av:'av-blue', emoji:'👩‍⚕️', stars:'★★★★★',
+  { col:1, accent:'accent-navy', av:'av-blue', emoji:'VR', stars:'★★★★★',
     text:'Me lo regalaron en la residencia de cardiología y se convirtió en el objeto más famoso de la guardia. Todos le hacen fotos al corazoncito.',
     name:'Valentina Ríos', role:'Residente de Cardiología · Bogotá' },
-  { col:1, accent:'accent-blue', av:'av-navy', emoji:'👨', stars:'★★★★★',
+  { col:1, accent:'accent-blue', av:'av-navy', emoji:'CT', stars:'★★★★★',
     text:'Le regalé los pulmones a mi esposa neumóloga y fue el mejor regalo que le he dado en 10 años de matrimonio. Calidad increíble, llegó súper rápido.',
     name:'Camilo Torres', role:'Esposo de neumóloga · Cali' },
-  { col:1, accent:'accent-green', av:'av-green', emoji:'👩', stars:'★★★★★',
+  { col:1, accent:'accent-green', av:'av-green', emoji:'MO', stars:'★★★★★',
     text:'Lo pedí contraentrega un viernes y el lunes ya estaba en mi puerta. Excelente atención por WhatsApp. El cerebro es exactamente como en las fotos.',
     name:'Mariana Ospina', role:'Estudiante de Medicina · Barranquilla' },
-  { col:1, accent:'accent-navy', av:'av-blue', emoji:'🧑‍⚕️', stars:'★★★★★',
+  { col:1, accent:'accent-navy', av:'av-blue', emoji:'SM', stars:'★★★★★',
     text:'Lo primero que ven mis pacientes al entrar al consultorio es el corazón en mi escritorio. Siempre rompe el hielo y genera conversación.',
     name:'Dr. Sebastián Mora', role:'Médico General · Manizales' },
 
   // Columna 2
-  { col:2, accent:'accent-blue', av:'av-green', emoji:'🧑‍🏫', stars:'★★★★★',
+  { col:2, accent:'accent-blue', av:'av-green', emoji:'AM', stars:'★★★★★',
     text:'La neurona llegó perfecta. Mis estudiantes de anatomía quedaron enamorados. Ya pedí 10 más para el salón.',
     name:'Prof. Andrés Mejía', role:'Docente de Anatomía · Medellín' },
-  { col:2, accent:'accent-green', av:'av-blue', emoji:'👩‍💻', stars:'★★★★★',
+  { col:2, accent:'accent-green', av:'av-blue', emoji:'SG', stars:'★★★★★',
     text:'Pedí el riñón para mi nefrólogo favorito en su cumple y le encantó. ¡Un detalle súper chévere que no esperaba!',
     name:'Sofía Guerrero', role:'Paciente agradecida · Bucaramanga' },
-  { col:2, accent:'accent-navy', av:'av-navy', emoji:'👩‍🔬', stars:'★★★★★',
+  { col:2, accent:'accent-navy', av:'av-navy', emoji:'LP', stars:'★★★★★',
     text:'Soy bióloga y la neurona me parece una obra de arte. Los axones y dendritas están bordados con un nivel de detalle que no esperaba para un peluche.',
     name:'Dra. Laura Pineda', role:'Bióloga molecular · Bogotá' },
-  { col:2, accent:'accent-blue', av:'av-green', emoji:'🧑', stars:'★★★★☆',
+  { col:2, accent:'accent-blue', av:'av-green', emoji:'MH', stars:'★★★★☆',
     text:'El empaque llegó impecable y el peluche de estómago es adorablemente raro. Mi roommate de medicina lo tiene en su cama. Muy buena calidad.',
     name:'Miguel Herrera', role:'Interno de Medicina · Cali' },
 
   // Columna 3
-  { col:3, accent:'accent-green', av:'av-navy', emoji:'🧑‍⚕️', stars:'★★★★★',
+  { col:3, accent:'accent-green', av:'av-navy', emoji:'FA', stars:'★★★★★',
     text:'Compré la columna vertebral para decorar mi consultorio de fisioterapia y los pacientes preguntan por ella en cada sesión. ¡Publicidad gratis!',
     name:'Dr. Felipe Arango', role:'Fisioterapeuta · Pereira' },
-  { col:3, accent:'accent-navy', av:'av-blue', emoji:'👩', stars:'★★★★★',
+  { col:3, accent:'accent-navy', av:'av-blue', emoji:'IV', stars:'★★★★★',
     text:'El packaging es precioso. Regalar esto a alguien de salud es un acierto total. 100% recomendado.',
     name:'Isabella Vargas', role:'Enfermera · Santa Marta' },
-  { col:3, accent:'accent-blue', av:'av-green', emoji:'👨‍⚕️', stars:'★★★★★',
+  { col:3, accent:'accent-blue', av:'av-green', emoji:'TR', stars:'★★★★★',
     text:'Compré los pulmones para regalarle a mi co-R de neumología y se volvió su posesión más preciada. Ya quiere la colección completa.',
     name:'Dr. Tomás Restrepo', role:'Residente de Neumología · Medellín' },
-  { col:3, accent:'accent-green', av:'av-navy', emoji:'👩‍🎓', stars:'★★★★★',
+  { col:3, accent:'accent-green', av:'av-navy', emoji:'VC', stars:'★★★★★',
     text:'Estudiar anatomía con el peluche al lado hace que todo sea menos estresante. El corazón ya tiene nombre: Ernesto. Gracias Sustancia P.',
     name:'Valentina Cruz', role:'Estudiante de Medicina · Bogotá' },
 ];
@@ -2550,7 +2568,7 @@ function mkCard(t) {
     if(isMob){
       // Move hero-right (image) inside hero-left, between h1 and desc
       if(!document.querySelector('.hero-left .hero-right')){
-        heroRight.style.cssText = 'min-height:300px;max-height:400px;border-radius:16px;overflow:hidden;margin:16px 0;order:unset;width:100%;';
+        heroRight.style.cssText = 'min-height:420px;max-height:520px;border-radius:16px;overflow:hidden;margin:16px 0;order:unset;width:100%;';
         h1.insertAdjacentElement('afterend', heroRight);
       }
     } else {
