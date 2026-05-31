@@ -1053,7 +1053,7 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   h1{font-size:clamp(30px,8vw,40px);letter-spacing:-1px;margin-bottom:14px;}
   .hero-desc{font-size:14px;margin-bottom:20px;max-width:100%;}
   .hero-btns{flex-direction:column;gap:8px;margin-bottom:20px;}
-  .hero-btns .btn{width:100%;justify-content:center;padding:13px 20px;font-size:14px;border-radius:var(--r-pill) !important;}
+  .hero-btns .btn{width:100%;justify-content:center;padding:13px 20px;font-size:14px;border-radius:var(--r-pill) !important;text-decoration:none !important;}
   .hero-metrics{
     display:grid;grid-template-columns:repeat(2,1fr);
     max-width:100%;border-radius:12px;
@@ -2110,7 +2110,7 @@ function renderCart(){
 
   // Totales
   const rawT = rawTotal();
-  const total = sum(isContra);
+  const total = sum(false); // En el carrito siempre sin contraentrega
 
   document.getElementById('cpRawTotal').textContent = fmt(rawT);
   document.getElementById('cpTotal').textContent = fmt(total);
@@ -2186,7 +2186,7 @@ function openCo(contra){
       hint.style.display='block';
       hint.innerHTML='🎉 <b>¡Promo aplicada!</b> 2 modelos a elegir + envío incluido por $125.000';
     } else {
-      const falta = PROMO_MIN_QTY - totalQty();
+      const falta = 2 - totalQty();
       hint.style.display='block';
       hint.innerHTML='💡 Agrega <b>'+(falta===1?'1 órgano más':falta+' más')+'</b> al carrito y llevas 2 modelos con envío por solo <b>$125.000</b>';
     }
