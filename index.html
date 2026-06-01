@@ -1780,7 +1780,14 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
         ⚡ Realizar compra · Wompi
         <span class="wompi-tag">wompi</span>
       </button>
-      <button class="co-btn-contra" id="coBtnContra" onclick="waContra()">📱 Confirmar por WhatsApp</button>
+      <!-- Checkbox compromiso contraentrega -->
+      <div id="co-contra-wrap" style="display:none;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:flex-start;gap:10px;background:#fff8ed;border:1.5px solid #fde68a;border-radius:12px;padding:12px 14px;cursor:pointer;font-size:12px;color:#92400e;font-weight:600;line-height:1.5;">
+          <input type="checkbox" id="co-contra-check" onchange="toggleContraBtn(this.checked)" style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:#012165;">
+          <span>Me comprometo a estar disponible para recibir mi pedido. Entiendo que el pago se realiza al momento de la entrega (+$5.000 de recargo).</span>
+        </label>
+        <button class="co-btn-contra" id="coBtnContra" onclick="pedirContraentrega()" disabled style="opacity:0.5;cursor:not-allowed;">📦 Confirmar pedido contraentrega</button>
+      </div>
       <button class="co-btn-back" onclick="closeCo()">← Volver al carrito</button>
     </div>
   </div>
@@ -2260,14 +2267,18 @@ function openCo(contra){
     document.getElementById('coTitle').textContent='Pedido contraentrega';
     document.getElementById('coSub').textContent='Llena tus datos y te confirmamos por WhatsApp antes de enviar.';
     document.getElementById('coBtnPay').style.display='none';
-    document.getElementById('coBtnContra').style.display='flex';
+    document.getElementById('co-contra-wrap').style.display='flex';
+    document.getElementById('co-contra-check').checked = false;
+    document.getElementById('coBtnContra').disabled = true;
+    document.getElementById('coBtnContra').style.opacity = '0.5';
+    document.getElementById('coBtnContra').style.cursor = 'not-allowed';
   } else {
     document.getElementById('co-contra-fee').style.display='none';
     document.getElementById('coTagTxt').textContent='Pago seguro';
     document.getElementById('coTitle').textContent='Finalizar pedido';
     document.getElementById('coSub').textContent='Completa tus datos y paga con tarjeta, Nequi o PSE.';
     document.getElementById('coBtnPay').style.display='flex';
-    document.getElementById('coBtnContra').style.display='none';
+    document.getElementById('co-contra-wrap').style.display='none';
   }
   document.getElementById('coOv').classList.add('on');
   closePanel();
@@ -2352,6 +2363,86 @@ async function pagarWompi(){
     alert('Error al procesar el pago. Intenta de nuevo.');
   }
 }
+function toggleContraBtn(checked){
+  const btn = document.getElementById('coBtnContra');
+  btn.disabled = !checked;
+  btn.style.opacity = checked ? '1' : '0.5';
+  btn.style.cursor = checked ? 'pointer' : 'not-allowed';
+}
+
+async function pedirContraentrega(){
+  const n=document.getElementById('coN').value.trim();
+  const e=document.getElementById('coE').value.trim();
+  const c=document.getElementById('coC').value.trim();
+  const d=document.getElementById('coD').value.trim();
+  const ciudad=document.getElementById('coCd').value.trim();
+  const depto=document.getElementById('coDp').value.trim();
+  if(!n||!e||!c){alert('Completa nombre, correo y celular para continuar.');return;}
+
+  const N8N_CE_URL = 'WEBHOOK_N8N_CONTRAENTREGA';
+  const productos = cart.map(it => `${it.n} x${it.qty} = ${fmt(it.p * it.qty)}`).join(', ');
+  const referencia = 'CE-' + Date.now();
+  const totalContra = sum(true);
+
+  const btn = document.getElementById('coBtnContra');
+  btn.innerHTML = '⏳ Enviando pedido...';
+  btn.disabled = true;
+
+  try {
+    await fetch(N8N_CE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        referencia,
+        nombre: n,
+        correo: e,
+        celular: c,
+        direccion: d,
+        ciudad,
+        departamento: depto,
+        productos,
+        total: fmt(totalContra),
+        tipo: 'Contraentrega',
+        fecha: new Date().toLocaleString('es-CO')
+      })
+    });
+
+    // Mostrar pantalla de confirmación
+    closeCo();
+    mostrarConfirmacionContra(n);
+
+  } catch(err) {
+    btn.innerHTML = '📦 Confirmar pedido contraentrega';
+    btn.disabled = false;
+    alert('Error al enviar el pedido. Intenta de nuevo.');
+  }
+}
+
+function mostrarConfirmacionContra(nombre){
+  // Crear overlay de confirmación
+  const overlay = document.createElement('div');
+  overlay.id = 'contra-confirm-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(1,33,101,0.85);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:20px;padding:36px 28px;max-width:420px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+      <div style="font-size:56px;margin-bottom:12px;">🎉</div>
+      <h2 style="font-size:22px;font-weight:900;color:#012165;margin:0 0 10px;letter-spacing:-0.5px;">¡Pedido recibido!</h2>
+      <p style="font-size:14px;color:#666;line-height:1.6;margin:0 0 20px;">Hola <b style="color:#012165;">${nombre}</b>, recibimos tu pedido contraentrega. En breve te llegará un WhatsApp para confirmar la entrega.</p>
+      <div style="background:#f8f9ff;border-radius:12px;padding:14px 16px;margin-bottom:20px;border:1px solid #e8ecf8;text-align:left;">
+        <div style="font-size:11px;color:#aaa;font-weight:700;text-transform:uppercase;margin-bottom:6px;">¿Qué sigue?</div>
+        <div style="font-size:13px;color:#012165;font-weight:600;line-height:1.8;">
+          📱 Te llegará un WhatsApp de confirmación<br>
+          ✅ Confirma que recibirás el pedido<br>
+          📦 Despachamos en 1 día hábil<br>
+          🚚 Llega en 3 días hábiles
+        </div>
+      </div>
+      <button onclick="document.getElementById('contra-confirm-overlay').remove()" style="background:#012165;color:#fff;border:none;border-radius:60px;padding:13px 32px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;width:100%;">Entendido ✓</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
 function waContra(){
   const n=document.getElementById('coN').value||'Cliente';
   const c=document.getElementById('coC').value;
