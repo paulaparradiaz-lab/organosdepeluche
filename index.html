@@ -2272,6 +2272,10 @@ function openCo(contra){
     document.getElementById('coBtnContra').disabled = true;
     document.getElementById('coBtnContra').style.opacity = '0.5';
     document.getElementById('coBtnContra').style.cursor = 'not-allowed';
+    setTimeout(()=>{
+      const wrap = document.getElementById('co-contra-wrap');
+      wrap.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }, 100);
   } else {
     document.getElementById('co-contra-fee').style.display='none';
     document.getElementById('coTagTxt').textContent='Pago seguro';
