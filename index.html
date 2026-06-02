@@ -2348,6 +2348,8 @@ async function pagarWompi(){
         departamento: depto,
         productos,
         total: fmt(sum(false)),
+        tipo: 'Pago anticipado',
+        estado: 'Pendiente',
         fecha: new Date().toLocaleString('es-CO')
       })
     }).catch(()=>{}); // No bloqueamos si n8n falla
@@ -2428,7 +2430,7 @@ async function pedirContraentrega(){
         productos,
         total: fmt(totalContra),
         tipo: 'Contraentrega',
-        estado: 'Pendiente contraentrega',
+        estado: 'Pendiente',
         fecha: new Date().toLocaleString('es-CO')
       })
     });
