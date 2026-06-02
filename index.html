@@ -2331,6 +2331,8 @@ function closeCo(){
 }
 function closeCoIfBg(e){if(e.target===document.getElementById('coOv'))closeCo();}
 async function pagarWompi(){
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: 'initiate_checkout' });
   const n=document.getElementById('coN').value.trim();
   const e=document.getElementById('coE').value.trim();
   const c=document.getElementById('coC').value.trim();
