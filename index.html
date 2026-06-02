@@ -1673,7 +1673,7 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
         <button class="qb" onclick="adjQ(1)">+</button>
       </div>
       <div class="modal-actions">
-        <button class="btn-addcart" onclick="addFromM()">🛒 Agregar al carrito</button>
+        <button class="btn-addcart" onclick="addFromM()">Agregar al carrito</button>
         <button class="btn-buynow" onclick="buyNow()">⚡ Realizar compra</button>
       </div>
     </div>
@@ -1752,9 +1752,10 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
       <div class="co-title" id="coTitle">Finalizar pedido</div>
       <div class="co-sub" id="coSub">Completa tus datos para continuar.</div>
     </div>
+    <div id="co-contra-notice" style="display:none;background:#ebf0fa;border:1.5px solid rgba(30,144,255,0.3);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:#1a3a6b;font-weight:600;line-height:1.6;">Los pedidos contraentrega tienen un recargo de <strong>$5.000</strong>, correspondiente a los cobros adicionales de las transportadoras. Este valor se suma al total y se paga al momento de la entrega.</div>
     <div class="fgrid">
-      <div class="fg"><label>Nombre completo</label><input id="coN" type="text" placeholder="Tu nombre"></div>
-      <div class="fg"><label>Celular</label><input id="coC" type="tel" placeholder="300 000 0000"></div>
+      <div class="fg full"><label>Nombre completo</label><input id="coN" type="text" placeholder="Tu nombre"></div>
+      <div class="fg full"><label>WhatsApp (guía de rastreo)</label><input id="coC" type="tel" placeholder="300 000 0000"></div>
       <div class="fg full"><label>Correo electrónico</label><input id="coE" type="email" placeholder="correo@ejemplo.com"></div>
       <div class="fg full"><label>Dirección de entrega</label><input id="coD" type="text" placeholder="Calle 123 # 4-5, Apto 201"></div>
       <div class="fg" style="position:relative;">
@@ -1778,17 +1779,17 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
     </div>
     <div class="co-actions">
       <button class="co-btn-pay" id="coBtnPay" onclick="pagarWompi()">
-        ⚡ Realizar compra · Wompi
+        Realizar compra · Wompi
         <span class="wompi-tag">wompi</span>
       </button>
       <!-- Checkbox compromiso contraentrega -->
       <div id="co-contra-wrap" style="display:none;flex-direction:column;gap:10px;">
         <label style="display:flex;align-items:flex-start;gap:10px;background:#fff8ed;border:1.5px solid #fde68a;border-radius:12px;padding:12px 14px;cursor:pointer;font-size:12px;color:#92400e;font-weight:600;line-height:1.5;">
           <input type="checkbox" id="co-contra-check" onchange="toggleContraBtn(this.checked)" style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:#012165;">
-          <span>Me comprometo a estar disponible para recibir mi pedido. Entiendo que el pago se realiza al momento de la entrega (+$5.000 de recargo).</span>
+          <span>Acepto el recargo de $5.000 y me comprometo a estar disponible para recibir mi pedido. Este recargo corresponde a los costos adicionales que cobran las transportadoras por pagos contra entrega.</span>
         </label>
       </div>
-      <button id="coBtnContra" onclick="pedirContraentrega()" disabled style="visibility:hidden;height:0;padding:0;margin:0;overflow:hidden;background:#1e90ff;color:#fff;border:none;border-radius:60px;width:100%;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:not-allowed;opacity:0.5;align-items:center;justify-content:center;gap:8px;display:flex;transition:all .15s;box-sizing:border-box;min-height:48px;">📦 Confirmar pedido contraentrega</button>
+      <button id="coBtnContra" onclick="pedirContraentrega()" disabled style="visibility:hidden;height:0;padding:0;margin:0;overflow:hidden;background:#1e90ff;color:#fff;border:none;border-radius:60px;width:100%;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:not-allowed;opacity:0.5;align-items:center;justify-content:center;gap:8px;display:flex;transition:all .15s;box-sizing:border-box;min-height:48px;">Confirmar pedido contraentrega</button>
       <button class="co-btn-back" onclick="closeCo()">← Volver al carrito</button>
     </div>
   </div>
@@ -2263,10 +2264,11 @@ function openCo(contra){
     }
   }
   if(contra){
-    document.getElementById('co-contra-fee').style.display='flex';
+    document.getElementById('co-contra-notice').style.display='none';
+    document.getElementById('co-contra-fee').style.display='none';
     document.getElementById('coTagTxt').textContent='Contraentrega';
     document.getElementById('coTitle').textContent='Pedido contraentrega';
-    document.getElementById('coSub').textContent='Llena tus datos y te confirmamos por WhatsApp antes de enviar.';
+    document.getElementById('coSub').textContent='Llena tus datos y te confirmamos por WhatsApp antes de enviar. Ten en cuenta que los pedidos contraentrega tienen un recargo de $5.000 por costos de las transportadoras.';
     document.getElementById('coBtnPay').style.display='none';
     document.getElementById('co-contra-wrap').style.display='flex';
     document.getElementById('co-contra-check').checked = false;
@@ -2285,6 +2287,7 @@ function openCo(contra){
       if(box) box.scrollTop = box.scrollHeight;
     }, 150);
   } else {
+    document.getElementById('co-contra-notice').style.display='none';
     document.getElementById('co-contra-fee').style.display='none';
     document.getElementById('coTagTxt').textContent='Pago seguro';
     document.getElementById('coTitle').textContent='Finalizar pedido';
