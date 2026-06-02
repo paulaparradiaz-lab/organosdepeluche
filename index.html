@@ -1084,10 +1084,8 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   .catalog{padding:32px 16px 40px;}
   .cat-hdr{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:20px;padding-bottom:14px;}
   .pgrid{
-    display:-webkit-grid;
     display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    -webkit-grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-columns:1fr 1fr;
     gap:10px;
   }
   .pcard-vis{height:200px;}
@@ -1268,6 +1266,10 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
 /* Extra small (≤380px) */
 @media(max-width:380px){
   .pgrid{grid-template-columns:1fr;}
+}
+@media(min-width:381px) and (max-width:640px){
+  .pgrid{grid-template-columns:1fr 1fr !important;}
+}
   h1{font-size:28px;}
   .hero-metrics{grid-template-columns:repeat(2,1fr);}
 }
@@ -2276,6 +2278,7 @@ function openCo(contra){
     document.getElementById('co-contra-wrap').style.display='flex';
     document.getElementById('co-contra-check').checked = false;
     const btnC = document.getElementById('coBtnContra');
+    btnC.innerHTML = 'Confirmar pedido contraentrega';
     btnC.style.visibility='visible';
     btnC.style.height='auto';
     btnC.style.minHeight='48px';
