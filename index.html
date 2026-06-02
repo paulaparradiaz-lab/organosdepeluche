@@ -899,10 +899,11 @@ h1 .c-navy{color:var(--navy);}
 .co-overlay.on{display:flex;}
 .co-box{
   background:var(--white);border:1.5px solid var(--border);
-  border-radius:20px;max-width:500px;width:100%;padding:38px;
+  border-radius:20px;max-width:500px;width:100%;padding:28px;
   box-shadow:var(--sh-lg);
   animation:pop .26s cubic-bezier(.34,1.4,.64,1);
-  max-height:92vh;overflow-y:auto;
+  max-height:90vh;overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
 .co-hdr{margin-bottom:22px;}
 .co-tag{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
@@ -944,11 +945,11 @@ h1 .c-navy{color:var(--navy);}
 .co-btn-pay:hover{background:var(--green-d);transform:translateY(-1px);}
 .wompi-tag{background:rgba(255,255,255,.2);padding:2px 7px;border-radius:6px;font-size:10px;letter-spacing:.04em;}
 .co-btn-contra{
-  display:none;background:var(--blue);color:#fff;border:none;
+  background:var(--blue);color:#fff;border:none;
   border-radius:var(--r-pill);padding:14px;
   font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;
   cursor:pointer;width:100%;
-  align-items:center;justify-content:center;gap:8px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
   transition:all .15s;
 }
 .co-btn-contra:hover{background:var(--blue-d);}
@@ -1786,8 +1787,8 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
           <input type="checkbox" id="co-contra-check" onchange="toggleContraBtn(this.checked)" style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:#012165;">
           <span>Me comprometo a estar disponible para recibir mi pedido. Entiendo que el pago se realiza al momento de la entrega (+$5.000 de recargo).</span>
         </label>
-        <button class="co-btn-contra" id="coBtnContra" onclick="pedirContraentrega()" disabled style="opacity:0.5;cursor:not-allowed;">📦 Confirmar pedido contraentrega</button>
       </div>
+      <button id="coBtnContra" onclick="pedirContraentrega()" disabled style="visibility:hidden;height:0;padding:0;margin:0;overflow:hidden;background:#1e90ff;color:#fff;border:none;border-radius:60px;width:100%;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:not-allowed;opacity:0.5;align-items:center;justify-content:center;gap:8px;display:flex;transition:all .15s;box-sizing:border-box;">📦 Confirmar pedido contraentrega</button>
       <button class="co-btn-back" onclick="closeCo()">← Volver al carrito</button>
     </div>
   </div>
@@ -2269,13 +2270,19 @@ function openCo(contra){
     document.getElementById('coBtnPay').style.display='none';
     document.getElementById('co-contra-wrap').style.display='flex';
     document.getElementById('co-contra-check').checked = false;
-    document.getElementById('coBtnContra').disabled = true;
-    document.getElementById('coBtnContra').style.opacity = '0.5';
-    document.getElementById('coBtnContra').style.cursor = 'not-allowed';
+    const btnC = document.getElementById('coBtnContra');
+    btnC.style.visibility='visible';
+    btnC.style.height='';
+    btnC.style.padding='';
+    btnC.style.margin='';
+    btnC.style.overflow='';
+    btnC.disabled = true;
+    btnC.style.opacity = '0.5';
+    btnC.style.cursor = 'not-allowed';
     setTimeout(()=>{
-      const wrap = document.getElementById('co-contra-wrap');
-      wrap.scrollIntoView({behavior:'smooth', block:'nearest'});
-    }, 100);
+      const box = document.querySelector('.co-box');
+      if(box) box.scrollTop = box.scrollHeight;
+    }, 150);
   } else {
     document.getElementById('co-contra-fee').style.display='none';
     document.getElementById('coTagTxt').textContent='Pago seguro';
@@ -2283,6 +2290,12 @@ function openCo(contra){
     document.getElementById('coSub').textContent='Completa tus datos y paga con tarjeta, Nequi o PSE.';
     document.getElementById('coBtnPay').style.display='flex';
     document.getElementById('co-contra-wrap').style.display='none';
+    const btnCH = document.getElementById('coBtnContra');
+    btnCH.style.visibility='hidden';
+    btnCH.style.height='0';
+    btnCH.style.padding='0';
+    btnCH.style.margin='0';
+    btnCH.style.overflow='hidden';
   }
   document.getElementById('coOv').classList.add('on');
   closePanel();
@@ -2372,6 +2385,12 @@ function toggleContraBtn(checked){
   btn.disabled = !checked;
   btn.style.opacity = checked ? '1' : '0.5';
   btn.style.cursor = checked ? 'pointer' : 'not-allowed';
+  if(checked){
+    setTimeout(()=>{
+      const box = document.querySelector('.co-box');
+      if(box) box.scrollTop = box.scrollHeight;
+    }, 100);
+  }
 }
 
 async function pedirContraentrega(){
