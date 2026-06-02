@@ -2404,7 +2404,7 @@ async function pedirContraentrega(){
   const depto=document.getElementById('coDp').value.trim();
   if(!n||!e||!c){alert('Completa nombre, correo y celular para continuar.');return;}
 
-  const N8N_CE_URL = 'WEBHOOK_N8N_CONTRAENTREGA';
+  const N8N_CE_URL = 'https://proyectosconpaulagpc.app.n8n.cloud/webhook/wompifirmaparaorganosdepeluchepedidos';
   const productos = cart.map(it => `${it.n} x${it.qty} = ${fmt(it.p * it.qty)}`).join(', ');
   const referencia = 'CE-' + Date.now();
   const totalContra = sum(true);
