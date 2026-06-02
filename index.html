@@ -1788,7 +1788,7 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
           <span>Me comprometo a estar disponible para recibir mi pedido. Entiendo que el pago se realiza al momento de la entrega (+$5.000 de recargo).</span>
         </label>
       </div>
-      <button id="coBtnContra" onclick="pedirContraentrega()" disabled style="visibility:hidden;height:0;padding:0;margin:0;overflow:hidden;background:#1e90ff;color:#fff;border:none;border-radius:60px;width:100%;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:not-allowed;opacity:0.5;align-items:center;justify-content:center;gap:8px;display:flex;transition:all .15s;box-sizing:border-box;">📦 Confirmar pedido contraentrega</button>
+      <button id="coBtnContra" onclick="pedirContraentrega()" disabled style="visibility:hidden;height:0;padding:0;margin:0;overflow:hidden;background:#1e90ff;color:#fff;border:none;border-radius:60px;width:100%;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:not-allowed;opacity:0.5;align-items:center;justify-content:center;gap:8px;display:flex;transition:all .15s;box-sizing:border-box;min-height:48px;">📦 Confirmar pedido contraentrega</button>
       <button class="co-btn-back" onclick="closeCo()">← Volver al carrito</button>
     </div>
   </div>
@@ -2272,10 +2272,11 @@ function openCo(contra){
     document.getElementById('co-contra-check').checked = false;
     const btnC = document.getElementById('coBtnContra');
     btnC.style.visibility='visible';
-    btnC.style.height='';
-    btnC.style.padding='';
+    btnC.style.height='auto';
+    btnC.style.minHeight='48px';
+    btnC.style.padding='14px 20px';
     btnC.style.margin='';
-    btnC.style.overflow='';
+    btnC.style.overflow='visible';
     btnC.disabled = true;
     btnC.style.opacity = '0.5';
     btnC.style.cursor = 'not-allowed';
@@ -2293,6 +2294,7 @@ function openCo(contra){
     const btnCH = document.getElementById('coBtnContra');
     btnCH.style.visibility='hidden';
     btnCH.style.height='0';
+    btnCH.style.minHeight='0';
     btnCH.style.padding='0';
     btnCH.style.margin='0';
     btnCH.style.overflow='hidden';
