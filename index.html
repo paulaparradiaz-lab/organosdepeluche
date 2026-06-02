@@ -2337,7 +2337,7 @@ async function pagarWompi(){
 
   try {
     // 1. Enviar pedido completo a n8n
-    const productos = cart.map(it => `${it.n} x${it.qty} = ${fmt(it.p * it.qty)}`).join(', ');
+    const productos = cart.map(it => `${it.n} x${it.qty}`).join(', ');
     fetch(N8N_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -2410,7 +2410,7 @@ async function pedirContraentrega(){
   if(!n||!e||!c){alert('Completa nombre, correo y celular para continuar.');return;}
 
   const N8N_CE_URL = 'https://proyectosconpaulagpc.app.n8n.cloud/webhook/wompifirmaparaorganosdepeluchepedidos';
-  const productos = cart.map(it => `${it.n} x${it.qty} = ${fmt(it.p * it.qty)}`).join(', ');
+  const productos = cart.map(it => `${it.n} x${it.qty}`).join(', ');
   const referencia = 'CE-' + Date.now();
   const totalContra = sum(true);
 
