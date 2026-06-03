@@ -1261,6 +1261,28 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   .promo-cat-price-wrap{padding:10px 20px 16px;}
 }
 
+/* ══════════════════════════════════════
+   TABLET  (641px – 1024px)
+══════════════════════════════════════ */
+@media(min-width:641px) and (max-width:1024px){
+  .pgrid{
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .pcard-vis{
+    height:280px;
+    aspect-ratio:unset;
+  }
+  .pcard-vis img{
+    object-fit:cover;
+    object-position:center top;
+  }
+  .pcard-body{padding:12px 14px 14px;}
+  .pcard-name{font-size:14px;}
+  .pcard-desc{display:none;}
+  .pcard-price{font-size:16px;}
+}
+
 /* Extra small (≤380px) */
 @media(max-width:320px){
   .pgrid{grid-template-columns:1fr;}
