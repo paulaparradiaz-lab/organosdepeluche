@@ -2862,7 +2862,11 @@ function mkCard(t) {
     if(!heroLeft || !heroRight || !h1 || !desc) return;
 
     if(isMob){
-      // CSS order handles layout on mobile — no DOM manipulation needed
+      // Move hero-right (image) inside hero-left, between h1 and desc
+      if(!document.querySelector('.hero-left .hero-right')){
+        heroRight.style.cssText = 'min-height:clamp(240px,50vw,340px);max-height:clamp(240px,50vw,340px);border-radius:16px;overflow:hidden;margin:12px 0;order:unset;width:100%;';
+        h1.insertAdjacentElement('afterend', heroRight);
+      }
     } else {
       // Restore hero-right to its original position outside hero-left
       const heroSection = document.querySelector('.hero');
