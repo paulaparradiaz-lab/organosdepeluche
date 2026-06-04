@@ -1039,6 +1039,7 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
     grid-template-columns:1fr;
     grid-template-rows:auto auto;
     min-height:unset;
+    max-height:unset;
   }
   .hero-left{
     padding:32px 20px 28px;
@@ -1046,10 +1047,10 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   }
   .hero-right{
     order:2;
-    min-height:clamp(260px,55vw,400px);
-    max-height:clamp(260px,55vw,400px);
+    min-height:300px;
+    max-height:300px;
   }
-  .hgal-main img{object-position:center 15%;object-fit:cover;width:100%;height:100%;}
+  .hgal-main img{object-position:center 10%;object-fit:cover;width:100%;height:100%;}
 
   .section-tag{font-size:10px;padding:5px 12px;margin-bottom:16px;}
   h1{font-size:clamp(30px,8vw,40px);letter-spacing:-1px;margin-bottom:14px;}
@@ -2864,7 +2865,7 @@ function mkCard(t) {
     if(isMob){
       // Move hero-right (image) inside hero-left, between h1 and desc
       if(!document.querySelector('.hero-left .hero-right')){
-        heroRight.style.cssText = 'min-height:clamp(240px,50vw,340px);max-height:clamp(240px,50vw,340px);border-radius:16px;overflow:hidden;margin:12px 0;order:unset;width:100%;';
+        heroRight.style.cssText = 'min-height:380px;max-height:380px;border-radius:16px;overflow:hidden;margin:12px 0;order:unset;width:100%;';
         h1.insertAdjacentElement('afterend', heroRight);
       }
     } else {
