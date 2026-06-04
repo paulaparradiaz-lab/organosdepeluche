@@ -2396,7 +2396,8 @@ async function pagarWompi(){
         ciudad,
         departamento: depto,
         productos,
-        total: fmt(sum(false)),
+        total: sum(false),
+        total_fmt: fmt(sum(false)),
         tipo: 'Pago anticipado',
         estado: 'Pendiente',
         fecha: new Date().toLocaleString('es-CO')
@@ -2477,7 +2478,8 @@ async function pedirContraentrega(){
         ciudad,
         departamento: depto,
         productos,
-        total: fmt(totalContra),
+        total: totalContra,
+        total_fmt: fmt(totalContra),
         tipo: 'Contraentrega',
         estado: 'Pendiente',
         fecha: new Date().toLocaleString('es-CO')
