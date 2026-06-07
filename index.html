@@ -2387,6 +2387,7 @@ async function pagarWompi(){
     fetch(N8N_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      keepalive: true,
       body: JSON.stringify({
         referencia,
         nombre: n,
