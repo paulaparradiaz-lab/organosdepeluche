@@ -2372,7 +2372,7 @@ async function pagarWompi(){
   const N8N_URL          = 'https://proyectosconpaulagpc.app.n8n.cloud/webhook/wompifirmaparaorganosdepeluchepedidos';
   const totalCentavos    = sum(false) * 100;
   const currency         = 'COP';
-  const referencia       = 'SP-' + Date.now();
+  const referencia       = 'OP-' + Date.now();
   const redirectUrl      = window.location.origin + window.location.pathname;
 
   // Mostrar loading
@@ -2459,7 +2459,7 @@ async function pedirContraentrega(){
 
   const N8N_CE_URL = 'https://proyectosconpaulagpc.app.n8n.cloud/webhook/wompifirmaparaorganosdepeluchepedidos';
   const productos = cart.map(it => `${it.n} x${it.qty}`).join(', ');
-  const referencia = 'CE-' + Date.now();
+  const referencia = 'OP-' + Date.now();
   const totalContra = sum(true);
 
   const btn = document.getElementById('coBtnContra');
