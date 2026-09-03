@@ -1521,6 +1521,61 @@ footer{background:var(--navy-d);padding:48px 48px 32px;color:white;}
   display:flex;align-items:center;gap:4px;
 }
 
+/* ── MODAL AMOR Y AMISTAD ── */
+.aya-ov{
+  position:fixed;inset:0;z-index:900;
+  background:rgba(1,33,101,0.55);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;overflow-y:auto;
+}
+.aya-ov.on{display:flex;animation:ayaFade .25s ease both;}
+@keyframes ayaFade{from{opacity:0}to{opacity:1}}
+@keyframes ayaUp{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.aya-box{
+  width:100%;max-width:360px;background:#fff;
+  border-radius:20px;overflow:hidden;margin:auto;
+  box-shadow:0 24px 64px rgba(1,33,101,0.35);
+  animation:ayaUp .32s cubic-bezier(.22,1,.36,1) both;
+}
+.aya-head{background:#D6304A;padding:44px 34px;position:relative;overflow:hidden;}
+.aya-pat{position:absolute;inset:0;width:100%;height:100%;}
+.aya-x{
+  position:absolute;top:6px;right:8px;z-index:3;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(0,0,0,0.18);border:none;color:#fff;
+  font-size:22px;line-height:1;cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font);transition:background .15s;
+}
+.aya-x:hover{background:rgba(0,0,0,0.34);}
+.aya-card{position:relative;background:#fff;border-radius:14px;padding:20px 18px;text-align:center;}
+.aya-kicker{font-size:26px;font-weight:900;color:#D6304A;line-height:1;letter-spacing:-1px;margin-bottom:7px;}
+.aya-h2{font-size:16px;font-weight:900;color:var(--navy);line-height:1.15;}
+.aya-sub{font-size:12.5px;font-weight:600;color:var(--light);margin-top:8px;line-height:1.5;}
+.aya-body{padding:16px 22px 22px;}
+.aya-note{background:var(--off);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;margin-bottom:15px;}
+.aya-note-t{font-size:13.5px;font-weight:900;color:var(--navy);}
+.aya-note-s{font-size:11px;font-weight:600;color:var(--light);margin-top:3px;line-height:1.45;}
+.aya-cta{
+  display:block;background:var(--blue-acc);color:#fff;
+  font-family:var(--font);font-size:13.5px;font-weight:900;
+  text-align:center;padding:13px;border-radius:var(--r-pill);
+  text-decoration:none;margin-bottom:9px;transition:background .18s;
+}
+.aya-cta:hover{background:var(--blue-acc-d);}
+.aya-skip{
+  display:block;width:100%;background:none;border:none;
+  font-family:var(--font);font-size:11.5px;font-weight:600;
+  color:var(--light);text-align:center;cursor:pointer;padding:4px;
+}
+.aya-skip:hover{color:var(--navy);}
+@media(max-width:640px){
+  .aya-ov{padding:16px;}
+  .aya-box{max-width:100%;}
+  .aya-kicker{font-size:24px;}
+  .aya-h2{font-size:15.5px;}
+}
+
 </style>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -2963,6 +3018,64 @@ function mkCard(t) {
   window.addEventListener('scroll', update, {passive:true});
   window.addEventListener('resize', update);
   update();
+})();
+</script>
+
+<!-- MODAL AMOR Y AMISTAD -->
+<div class="aya-ov" id="ayaOv" onclick="ayaBg(event)">
+  <div class="aya-box" role="dialog" aria-modal="true" aria-labelledby="ayaTitle">
+    <div class="aya-head">
+      <svg class="aya-pat" viewBox="0 0 400 130" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><pattern id="ayaBeat" x="0" y="0" width="72" height="60" patternUnits="userSpaceOnUse"><g transform="scale(0.95)"><path d="M13 25 C13 25 2 17.5 2 10.5 C2 6.6 4.9 4 8 4 C10.3 4 12.1 5.3 13 6.8 C13.9 5.3 15.7 4 18 4 C21.1 4 24 6.6 24 10.5 C24 17.5 13 25 13 25 Z" fill="none" stroke="#fff" stroke-opacity="0.40" stroke-width="2.0" stroke-linejoin="round"/></g><g transform="translate(36,30) scale(0.95)"><path d="M13 25 C13 25 2 17.5 2 10.5 C2 6.6 4.9 4 8 4 C10.3 4 12.1 5.3 13 6.8 C13.9 5.3 15.7 4 18 4 C21.1 4 24 6.6 24 10.5 C24 17.5 13 25 13 25 Z" fill="none" stroke="#fff" stroke-opacity="0.40" stroke-width="2.0" stroke-linejoin="round"/></g></pattern></defs><rect width="400" height="130" fill="url(#ayaBeat)"/>
+      </svg>
+      <button class="aya-x" onclick="ayaClose()" aria-label="Cerrar">&times;</button>
+      <div class="aya-card">
+        <div class="aya-kicker" id="ayaTitle">Amor y amistad</div>
+        <div class="aya-h2">&iquest;Te toc&oacute; alguien de la salud?</div>
+        <p class="aya-sub">Deja el termo y la taza.</p>
+      </div>
+    </div>
+    <div class="aya-body">
+      <div class="aya-note">
+        <div class="aya-note-t">Pide hasta el 10 de septiembre</div>
+        <div class="aya-note-s">Para asegurar que llegue antes del 19 de septiembre</div>
+      </div>
+      <a href="#catalogo" class="aya-cta" onclick="ayaGo(event)">Ver la colecci&oacute;n &rarr;</a>
+      <button class="aya-skip" onclick="ayaClose()">Ahora no, gracias</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── MODAL AMOR Y AMISTAD ──
+(function(){
+  var CIERRE = new Date(2026, 8, 10, 23, 59, 59); // 10 sep 2026
+  var KEY = 'aya2026';
+  var ov = document.getElementById('ayaOv');
+  if(!ov) return;
+  if(new Date() > CIERRE) return;
+  try{ if(localStorage.getItem(KEY)) return; }catch(e){}
+
+  window.ayaClose = function(){
+    ov.classList.remove('on');
+    document.body.style.overflow='';
+    try{ localStorage.setItem(KEY,'1'); }catch(e){}
+  };
+  window.ayaBg = function(e){ if(e.target===ov) window.ayaClose(); };
+  window.ayaGo = function(e){
+    e.preventDefault();
+    window.ayaClose();
+    var c = document.getElementById('catalogo');
+    if(c) c.scrollIntoView({behavior:'smooth'});
+  };
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape' && ov.classList.contains('on')) window.ayaClose();
+  });
+
+  setTimeout(function(){
+    ov.classList.add('on');
+    document.body.style.overflow='hidden';
+  }, 2500);
 })();
 </script>
 
